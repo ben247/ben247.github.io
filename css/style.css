@@ -29,6 +29,8 @@ p {
   h1 {
     font-family: 'Open Sans', sans-serif;
     font-size: 4.5em;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .top-section {
@@ -39,6 +41,8 @@ p {
 
   .top-section h2 {
     color: #C0C0C0;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .top-section img {
@@ -63,14 +67,20 @@ p {
         font-size: 1.5em; /* 1.5x default size */
     }
   }
-  @media all and (max-width: 1000px) { /* screen size until 1000px */
-    .mid-top-section {
-        font-size: 1.2em; /* 1.2x default size */
+  @media (max-width: 1000px) { /* screen size until 1000px */
+    .mid-top-section h1 {
+        font-size: 2.3em; /* 1.2x default size */
         }
     }
+  @media (max-width: 500px) { /* screen size until 500px */
+    .mid-top-section h1 {
+        font-size: 1.6em; /* 0.8x default size */
+        }
+    }
+
   @media all and (max-width: 500px) { /* screen size until 500px */
-    .mid-top-section {
-        font-size: 0.8em; /* 0.8x default size */
+    .mid-top-section h2 {
+        font-size: 0.7em; /* 0.8x default size */
         }
     }
 
