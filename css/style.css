@@ -15,11 +15,11 @@
     }*/
 
     a {
-      color: black;
+      color: #434343;
     }
 
     a:hover {
-      color: grey;
+      color: #42C8F5;
     }
 
 p {
@@ -28,8 +28,27 @@ p {
 
   h1 {
     font-family: 'Open Sans', sans-serif;
+    font-size: 4.5em;
   }
 
-  .bracket {
-    color: blue;
+  .top-section {
+    background-color: #434343;
+    color: #F8F8FF;
+    padding: 50px 0px 50px 0px;
+  }
+
+  .top-section h2 {
+    color: #C0C0C0;
+  }
+
+  .top-section img {
+    margin: 10px
+  }
+
+  .mid-top-section {
+    padding-top: 155px;
+  }
+
+  .bg-4 {
+    background-color: #F5F5F5;
   }
