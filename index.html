@@ -9,63 +9,71 @@
 
 <body>
   <!-- Begin div for speech transcript -->
-  <div class="save">
-    <button type="button">
-      <i class="fas fa-envelope"></i> SAVE
-    </button>
-    <input id="inputFileNameToSaveAs" />
-    <button onclick="saveTextAsFile()">SAVE TEXT TO FILE</button>
+  <div class="words" contenteditable>
+  </div>
+  <!-- Begin script -->
+  <script>
+    /* Initiating the SpeechRecognition service on the window object and setting it to SpeechRecognition or webkitSpeechRecognition
+    for the Chrome prefix */
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    /* Create a new instance of SpeechRecognition using the const declaration as it is a read-only variable */
+    const recognition = new SpeechRecognition();
+    /* interimResults is the property that sets the results of the speech recognition as final.
+  Setting this to true allows the results to be displayed as the user speaks rather than once the user has finished */
+    recognition.interimResults = true;
+    recognition.lang = 'en-US'; /* lang sets the accent and allows the SpeechRecognition engine to improve the result */
+    /* Create an paragraph element and assign the variable p using the let statement. This is a block-scoped variable as
+        it will be over-written by the textContent object created later */
+    let p = document.createElement('p');
+    /* Get the words div using the document.querySelector and assign to the variable words*/
+    const words = document.querySelector('.words');
+    /* Add a paragraph to the words element in the document */
+    words.appendChild(p);
+    /* Get the recognition instance and add an event listener that listens for a result.
+    When the result is returned, an event is created. The ES6 arrow function => replaces the function expression */
+    recognition.addEventListener('result', e => {
+      /* The results contain SpeechRecognitionResult objects that can be accessed like an array */
+      /* Create a variable called transcript, assign the results and convert them to an array */
+      const transcript = Array.from(e.results) /* The Array.from method creates an array from the results object */
+        .map(result => result[0]) /* Loop over the first result in the Array using the Map method */
+        .map(result => result.transcript) /* Run Map again on the result */
+        .join(''); /* Use the Join method on the array and convert to a string */
 
-    <div class="words" contenteditable>
-    </div>
+      const poopScript = transcript.replace(/poop|poo|shit|dump/gi, '💩');
+      p.textContent = poopScript;
+      /* time function */
 
-    <script>
-      window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const synth = window.speechSynthesis;
 
-      const recognition = new SpeechRecognition();
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
+      const getTime = () => {
+        const time = new Date(Date.now());
+        return `the time is ${time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`
+      };
 
-      let p = document.createElement('p');
-      const words = document.querySelector('.words');
-      words.appendChild(p);
-      /* Save text to file - Start */
-      recognition.addEventListener('result', e => {
-        const transcript = Array.from(e.results)
-          .map(result => result[0])
-          .map(result => result.transcript)
-          .join('');
+      const speak = (action) => {
+        utterThis = new SpeechSynthesisUtterance(action());
+        synth.speak(utterThis);
+      };
 
-        const poopScript = transcript.replace(/poop|poo|shit|dump/gi, '💩');
-        p.textContent = poopScript;
-        /* time function */
+      if (transcript.includes('what is the time')) {
+        speak(getTime);
+      };
 
-        const synth = window.speechSynthesis;
+      /* The results are overwritten. To stop this, run a check to see if the results proporty is final */
+      if (e.results[0].isFinal) {
+        p = document.createElement('p'); /* Create a new paragraph */
+        words.appendChild(p); /* Add the paragraph to the words div*/
+      }
+      console.log(transcript);
+      //  console.log(e.results);
 
-        const getTime = () => {
-          const time = new Date(Date.now());
-          return `the time is ${time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`
-        };
-
-        const speak = (action) => {
-          utterThis = new SpeechSynthesisUtterance(action());
-          synth.speak(utterThis);
-        };
-
-        if (transcript.includes('what is the time')) {
-          speak(getTime);
-        };
-
-
-        if (e.results[0].isFinal) {
-          p = document.createElement('p');
-          words.appendChild(p);
-        }
-      });
-
-      recognition.addEventListener('end', recognition.start);
-
-      recognition.start();
+    });
+    /* By default, the continuous property of the SpeechRecognition, is set to false.
+       This means, after the first result, the event has finished, therefore the service would stop.
+       Restarting the service by listening for the end of the speech capture service and starting the function again */
+    recognition.addEventListener('end', recognition.start);
+    /* Start the recognition function */
+    recognition.start();
 
 
 // Refs
@@ -75,37 +83,37 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
 
-    </script>
+  </script>
 
 
-    <style>
-      html {
-        font-size: 10px;
-      }
+  <style>
+    html {
+      font-size: 10px;
+    }
 
-      body {
-        background: #00b7ff;
-        font-family: 'Helvetica';
-        font-weight: 200;
-        font-size: 20px;
-      }
+    body {
+      background: #00b7ff;
+      font-family: 'Helvetica';
+      font-weight: 200;
+      font-size: 20px;
+    }
 
-      .words {
-        max-width: 500px;
-        margin: 50px auto;
-        background: white;
-        border-radius: 5px;
-        box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
-        padding: 1rem 2rem 1rem 5rem;
-        background-size: 100% 3rem;
-        position: relative;
-        line-height: 3rem;
-      }
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
 
-      p {
-        margin: 0 0 3rem;
-      }
-    </style>
+    p {
+      margin: 0 0 3rem;
+    }
+  </style>
 
 
 </body>
