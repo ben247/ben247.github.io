@@ -39,8 +39,8 @@
         .map(result => result.transcript) /* Run Map again on the result */
         .join(''); /* Use the Join method on the array and convert to a string */
 
-      const poopScript = transcript.replace(/poop|poo|shit|dump/gi, '💩');
-      p.textContent = poopScript;
+      const emojiScript = transcript.replace(/unicorn/gi, '🦄🦄🦄🦄🦄🦄🦄🦄');
+      p.textContent = emojiScript;
       /* time function */
 
       const synth = window.speechSynthesis;
